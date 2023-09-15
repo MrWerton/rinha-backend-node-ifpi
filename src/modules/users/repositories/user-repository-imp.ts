@@ -32,7 +32,7 @@ export class UserRepositoryImp implements UserRepository {
     }
 
     async findById(id: string): Promise<User> {
-        throw new AppException(100, '');
+        throw new AppException("100", 400);
 
     }
 

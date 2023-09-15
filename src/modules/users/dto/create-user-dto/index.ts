@@ -11,26 +11,26 @@ export class CreateUserDto {
     }
 
     _handlerValidation() {
-        const notificationErrors: string[] = [];
+        const notificationExceptions: string[] = [];
 
         if (!this.nickname || this.nickname.trim() === '') {
-            notificationErrors.push('Nickname is required and cannot be empty.');
+            notificationExceptions.push('Nickname is required and cannot be empty.');
         }
 
         if (!this.name || this.name.trim() === '') {
-            notificationErrors.push('Name is required and cannot be empty.');
+            notificationExceptions.push('Name is required and cannot be empty.');
         }
 
         if (!this.birthDate) {
-            notificationErrors.push('Valid birthDate is required.');
+            notificationExceptions.push('birthDate is required.');
         }
 
         if (!this.stack || !Array.isArray(this.stack) || this.stack.length === 0) {
-            notificationErrors.push('Stack must be a non-empty array.');
+            notificationExceptions.push('Stack must be a non-empty array.');
         }
 
-        if (notificationErrors.length > 0) {
-            throw new InvalidArgumentsException(notificationErrors.join('\n'));
+        if (notificationExceptions.length > 0) {
+            throw new InvalidArgumentsException(notificationExceptions.join('; '));
         }
     }
 }

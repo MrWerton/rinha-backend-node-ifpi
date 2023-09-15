@@ -17,16 +17,14 @@ export class UserController {
     }
 
     async create(req: Request, res: Response): Promise<Response> {
-        const repository = ServiceLocator.getInstance().get<UserRepository>('user-repository')
 
 
         const {name, nickname, birthDate, stack} = req.body;
 
         const userDto = new CreateUserDto(name, nickname, birthDate, stack);
 
-        const response = await repository.create(userDto);
 
-        return res.json(response);
+        return res.json(userDto);
     }
 
 
