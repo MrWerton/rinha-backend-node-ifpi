@@ -4,5 +4,7 @@ import {UserController} from "../controllers/user-controller";
 export const userRoutes = Router();
 
 const userController = new UserController();
-userRoutes.get('/', userController.getAll)
-userRoutes.post('/', userController.create)
+userRoutes.post('/pessoas/', userController.create)
+userRoutes.get('/pessoas/:id', userController.getById)
+userRoutes.get('/pessoas/', userController.getByTerm)
+userRoutes.get('/contagem-pessoas', userController.getCount)

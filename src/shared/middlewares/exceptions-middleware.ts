@@ -8,13 +8,12 @@ export function handleExceptionsMiddleware(
     next: NextFunction
 ) {
     if (error instanceof AppException) {
-        console.log('here')
         return response
             .status(error.code)
             .json({message: error.message});
     }
 
-    return response.send(500).json({
+    return response.status(500).json({
         status: "error",
         message: `Internal server error: ${error.message}`,
     });
