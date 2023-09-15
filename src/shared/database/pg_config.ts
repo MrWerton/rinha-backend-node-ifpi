@@ -7,10 +7,11 @@ export class PGConfig {
 
     constructor() {
         this.pool = new Pool({
-            connectionString: DB_URL,
+            connectionString: process.env.DB_URL ?? DB_URL,
             connectionTimeoutMillis: Number(process.env.CONNECTION_TIMEOUT),
             min: Number(process.env.MIN_NUMBER_OF_POOL),
             max: Number(process.env.MAX_NUMBER_OF_POOL),
+            idleTimeoutMillis: Number(process.env.IDLE_TIMEOUT),
         });
         this._initialize();
         this._createTables();
