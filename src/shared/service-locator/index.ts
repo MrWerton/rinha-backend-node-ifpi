@@ -3,7 +3,8 @@ export class ServiceLocator {
 
     private services: Map<string, any> = new Map();
 
-    private constructor() { }
+    private constructor() {
+    }
 
 
     public static getInstance(): ServiceLocator {
@@ -25,6 +26,7 @@ export class ServiceLocator {
             throw new Error(`Service ${name} not founded`)
         }
 
+        console.log('service')
         return service;
     }
 

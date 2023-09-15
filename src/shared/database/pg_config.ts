@@ -16,7 +16,11 @@ export class PGConfig {
         this._createTables();
     }
 
-    async _initialize() {
+    async command(sql: string, option?: any[]) {
+        return this.pool.query(sql, option);
+    }
+
+    private async _initialize() {
         try {
             await this.pool.connect();
             console.log(('started'))
@@ -29,7 +33,7 @@ export class PGConfig {
 
     }
 
-    async _createTables() {
+    private async _createTables() {
         await this.pool.query(`
             CREATE TABLE IF NOT EXISTS "users"
             (
@@ -56,12 +60,6 @@ export class PGConfig {
 
         `)
         console.log('creaated')
-    }
-
-
-    async command(sql: string, option?: any[]) {
-        console.log(sql)
-        return this.pool.query(sql, option);
     }
 
 }
