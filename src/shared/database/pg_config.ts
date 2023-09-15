@@ -1,21 +1,26 @@
-import { Pool } from 'pg';
+import {Pool} from 'pg';
 
+const DB_URL = "postgres://notrew:avlis@localhost:5432/postgres"
 
+export class PGConfig {
+    private pool: Pool
 
-class PGConfig {
-    constructor(private pool: Pool) {
+    constructor() {
         this.pool = new Pool({
-            connectionString: process.env.DB_URL,
+            connectionString: DB_URL,
             connectionTimeoutMillis: Number(process.env.CONNECTION_TIMEOUT),
             min: Number(process.env.MIN_NUMBER_OF_POOL),
             max: Number(process.env.MAX_NUMBER_OF_POOL),
-
-        }).on('error', this._initialize).once('connect', this._createTables);
+        });
+        this._initialize();
+        this._createTables();
     }
 
-    _initialize() {
+    async _initialize() {
         try {
-            this.pool.connect();
+            await this.pool.connect();
+            console.log(('started'))
+
         } catch (err) {
             setTimeout(() => {
                 console.log(`Connection error detected. Reconnecting in 2 seconds`)
@@ -24,25 +29,38 @@ class PGConfig {
 
     }
 
-    _createTables() {
-        const sql = `
-        CREATE TABLE my_table (
-            id SERIAL PRIMARY KEY,
-            nickname VARCHAR(32) NOT NULL UNIQUE,
-            name VARCHAR(100) NOT NULL,
-            birth_date DATE NOT NULL,
-            stack VARCHAR(32)[],
-        );
-        
-        CREATE INDEX idx_nickname ON my_table (nickname);
-        `
+    async _createTables() {
+        await this.pool.query(`
+            CREATE TABLE IF NOT EXISTS "users"
+            (
+                id
+                SERIAL
+                PRIMARY
+                KEY,
+                nickname
+                VARCHAR
+            (
+                32
+            ) NOT NULL UNIQUE,
+                name VARCHAR
+            (
+                100
+            ) NOT NULL,
+                birth_date DATE NOT NULL,
+                stack VARCHAR
+            (
+                32
+            )[]
+                );
 
-        return this.pool.query(sql)
+
+        `)
+        console.log('creaated')
     }
 
 
-
-    command(sql: string, option?: any[]) {
+    async command(sql: string, option?: any[]) {
+        console.log(sql)
         return this.pool.query(sql, option);
     }
 
